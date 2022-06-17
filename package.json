@@ -1,4 +1,4 @@
-{
+﻿{
   "name": "record-build-info-plugin",
   "version": "1.0.1",
   "description": "生一个json文件，包含项目基础信息(版本,分支,最新提交ID,打包时间)",
@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "wanglaibin",
+  "repository": "https://github.com/laibin-wang/recordBuildInfo.git",
   "license": "MIT",
   "engines": {
     "node": ">=6.9"
