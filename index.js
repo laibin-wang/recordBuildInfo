@@ -1,7 +1,8 @@
-const PLUGIN_NAME = 'record-build-info-plugin'
 const { execSync } = require('child_process')
 const path = require('path')
 const fs = require('fs')
+
+const PLUGIN_NAME = 'record-build-info-plugin'
 
 class RecordBuildInfoPlugin {
   constructor (dir) {
@@ -77,6 +78,9 @@ class RecordBuildInfoPlugin {
     dateArr.pop()
     const commitMsg  = this._parseStdout(`git log --pretty=format:%s  ${commitId} -1`).trim()
     const barnch  = this._parseStdout('git rev-parse --abbrev-ref HEAD').replace(/\s+/, '')
+    const barnch1  = this._parseStdout('git symbolic-ref --short -q HEAD')
+    const barnch2  = this._parseStdout('git rev-parse --symbolic-full-name @{upstream}')
+    // git rev-parse --symbolic-full-name --abbrev-ref @{u}
     // const barnch = this._parseStdout('git rev-parse --symbolic-full-name @{upstream}')
     // const info = this._parseStdout('git show -s')
     const now = new Date()
@@ -84,7 +88,7 @@ class RecordBuildInfoPlugin {
     const commitInfo = `
     - 最后一次信息:
     - 项目名称: ${name}
-    - 项目分支: ${barnch}
+    - 项目分支: ${barnch}【${barnch1}】【${barnch2}】
     - 提交作者: ${commitAuthor}
     - 提交日期: ${dateArr.join(' ')}
     - commitId: ${commitId}
@@ -92,6 +96,9 @@ class RecordBuildInfoPlugin {
     - 打包时间: ${buildTime}
     `
     return commitInfo
+  }
+  _getPackAageInfo () {
+
   }
 }
 
