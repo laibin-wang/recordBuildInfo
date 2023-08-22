@@ -77,18 +77,16 @@ class RecordBuildInfoPlugin {
     const dateArr = commitDate.split(' ')
     dateArr.pop()
     const commitMsg  = this._parseStdout(`git log --pretty=format:%s  ${commitId} -1`).trim()
-    const barnch  = this._parseStdout('git rev-parse --abbrev-ref HEAD').replace(/\s+/, '')
-    const barnch1  = this._parseStdout('git symbolic-ref --short -q HEAD')
-    const barnch2  = this._parseStdout('git rev-parse --symbolic-full-name @{upstream}')
-    // git rev-parse --symbolic-full-name --abbrev-ref @{u}
-    // const barnch = this._parseStdout('git rev-parse --symbolic-full-name @{upstream}')
-    // const info = this._parseStdout('git show -s')
+    let barnch  = this._parseStdout('git rev-parse --abbrev-ref HEAD').replace(/\s+/, '')
+    if (barnch === 'HEAD') {
+      barnch = this._parseStdout('git name-rev --name-only HEAD').replace(/\s+/, '')
+    }
     const now = new Date()
     const buildTime = this._formatDate(now)
     const commitInfo = `
     - 最后一次信息:
     - 项目名称: ${name}
-    - 项目分支: ${barnch}【${barnch1}】【${barnch2}】
+    - 项目分支: ${barnch}
     - 提交作者: ${commitAuthor}
     - 提交日期: ${dateArr.join(' ')}
     - commitId: ${commitId}
@@ -98,7 +96,6 @@ class RecordBuildInfoPlugin {
     return commitInfo
   }
   _getPackAageInfo () {
-
   }
 }
 
